@@ -32,14 +32,14 @@ ARG DATABASE_URL
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
 
-FROM --platform=linux/amd64 ${BUILDER_IMAGE} as builder
+FROM ${BUILDER_IMAGE} as builder
 
 
 # install build dependencies
 RUN apt-get update -y && apt-get install -y build-essential git nodejs npm curl wget && apt-get clean && rm -f /var/lib/apt/lists/*_*
 RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - && apt-get install -y nodejs
 RUN npm install -g npm@9.8.1
-RUN wget -O - 'https://github.com/elm/compiler/releases/download/0.19.1/binary-for-linux-64-bit.gz' | gunzip -c >/usr/local/bin/elm
+RUN wget -O - 'https://github.com/elm/compiler/releases/download/0.19.1/binary-for-mac-64-bit-ARM.gz' | gunzip -c >/usr/local/bin/elm
 
 # make the elm compiler executable
 RUN chmod +x /usr/local/bin/elm
@@ -100,7 +100,7 @@ RUN mix release
 
 # start a new build stage so that the final image will only contain
 # the compiled release and other runtime necessities
-FROM --platform=linux/amd64 ${RUNNER_IMAGE}
+FROM ${RUNNER_IMAGE}
 
 RUN apt-get update -y && apt-get install -y libstdc++6 openssl libncurses5 locales && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
