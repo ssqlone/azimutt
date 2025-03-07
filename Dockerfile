@@ -39,7 +39,7 @@ FROM ${BUILDER_IMAGE} as builder
 RUN apt-get update -y && apt-get install -y build-essential git nodejs npm curl wget && apt-get clean && rm -f /var/lib/apt/lists/*_*
 RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - && apt-get install -y nodejs
 RUN npm install -g npm@9.8.1
-RUN wget -O - 'https://github.com/elm/compiler/releases/download/0.19.1/binary-for-mac-64-bit-ARM.gz' | gunzip -c >/usr/local/bin/elm
+RUN wget -O - 'https://github.com/lydell/compiler/releases/download/0.19.1/binary-for-linux-arm-64-bit-recommended.gz' | gunzip -c >/usr/local/bin/elm
 
 # make the elm compiler executable
 RUN chmod +x /usr/local/bin/elm
